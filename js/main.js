@@ -1,18 +1,20 @@
 const elDog = document.querySelector('.dog');
 const elPlayBoard = document.querySelector('.board');
 const elHouse = document.querySelector('.house');
-const elBlock = document.querySelector('.block');
-const elRow = document.querySelector('input[name=rowBlock]');
-const elColumn = document.querySelector('input[name=columnBlock]');
-const elForm = document.querySelector('form');
-const elHtmlRow = document.querySelector('.htmlRow');
+// const elBlock = document.querySelector('.block');
+// const elRow = document.querySelector('input[name=rowBlock]');
+// const elColumn = document.querySelector('input[name=columnBlock]');
+// const elForm = document.querySelector('form');
+// const elHtmlRow = document.querySelector('.htmlRow');
 
-let X, Y;
+let X, Y, Xnew, Ynew;
 let Xl, Yt, Xm, Ym, Xr, Yd, Xw, Yh;
 let html = '';
 
 //розмір ігрового поля
-console.log('Поле:', elPlayBoard.clientHeight, elPlayBoard.clientWidth);
+const borderX = elPlayBoard.clientWidth;
+const borderY = window.innerHeight;
+console.log('Поле:', borderX, borderY);
 
 //розмір клітин, на які хотіла поділити поле
 // const blockWidth = elBlock.clientWidth;
@@ -24,8 +26,8 @@ console.log('Поле:', elPlayBoard.clientHeight, elPlayBoard.clientWidth);
 // elBlock.style.width = '100px';
 
 const randCoord = (itemLnk) => {
-    let maxX = elPlayBoard.clientWidth - itemLnk.clientWidth;
-    let maxY = elPlayBoard.clientHeight - itemLnk.clientHeight;
+    let maxX = borderX - itemLnk.clientWidth;
+    let maxY = borderY - itemLnk.clientHeight;
     X = Math.floor(Math.random()*maxX);
     Y = Math.floor(Math.random()*maxY);
 }
@@ -94,24 +96,28 @@ elPlayBoard.addEventListener('click', (ev) => {
         
         if((mouseX>Xl)&&(mouseX<Xm)&&(mouseY>Yt)&&(mouseY<Ym)) {
             console.log('верхний левый угол', Xl, Xm, Yt, Ym);
-            Xl = Xl + Xw;
-            Yt = Yt + Yh;
-            console.log('новое положение', Xl, Xm, Yt, Ym);
+            Xnew = Xl + Xw/2;
+            Ynew = Yt + Yh/2;
+            console.log('новое положение', Xnew, Ynew);
         } else if ((mouseX>Xm)&&(mouseX<Xr)&&(mouseY>Yt)&&(mouseY<Ym)) {
             console.log('верхний правый угол');
-            Xl = Xl - Xw;
-            Yt = Yt + Yh;
+            Xnew = Xl - Xw/2;
+            Ynew = Yt + Yh/2;
         } else if ((mouseX>Xl)&&(mouseX<Xm)&&(mouseY>Ym)&&(mouseY<Yd)) {
             console.log('нижний левый угол');
-            Xl = Xl + Xw;
-            Yt = Yt - Yh;
+            Xnew = Xl + Xw/2;
+            Ynew = Yt - Yh/2;
         } else if ((mouseX>Xm)&&(mouseX<Xr)&&(mouseY>Ym)&&(mouseY<Yd)) {
             console.log('нижний правый угол');
-            Xl = Xl - Xw;
-            Yt = Yt - Yh;
+            Xnew = Xl - Xw/2;
+            Ynew = Yt - Yh/2;
         }
 
-        renderDog(Xl, Yt, elDog);
+        if ((Xnew>0)&&(Xnew<(borderX-Xw))&&(Ynew>0)&&(Ynew<(borderY-Yh))) {
+            Xl = Xnew;
+            Yt = Ynew;
+            renderDog(Xl, Yt, elDog);
+        };
 })
 
 
