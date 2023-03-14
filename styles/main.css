@@ -57,4 +57,13 @@
   border: 5px double blue;
   padding: 20px;
   font-size: 36px;
+}
+
+.atCat {
+  background-color: rgb(106, 6, 6);
+  border: 5px double orange;
+  padding: 20px;
+  font-size: 36px;
+  text-align: center;
+  color: orange;
 }/*# sourceMappingURL=main.css.map */

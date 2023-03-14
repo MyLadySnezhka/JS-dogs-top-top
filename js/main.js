@@ -1,6 +1,7 @@
 const elDog = document.querySelector('.dog');
 const elPlayBoard = document.querySelector('.board');
 const elHouse = document.querySelector('.house');
+const elCat = document.querySelector('.cat');
 // const elBlock = document.querySelector('.block');
 // const elRow = document.querySelector('input[name=rowBlock]');
 // const elColumn = document.querySelector('input[name=columnBlock]');
@@ -11,6 +12,7 @@ let X, Y, Xnew, Ynew;
 let Xl, Yt, Xm, Ym, Xr, Yd, Xw, Yh;
 let html = '';
 let houseX, houseY;
+let catX, catY;
 
 //розмір ігрового поля
 const borderX = elPlayBoard.clientWidth;
@@ -65,6 +67,14 @@ renderHouse = (itemLnk) => {
     houseY = Y;
 }
 
+renderCat = (itemLnk) => {
+    randCoord(itemLnk);
+    itemLnk.style.left = `${X}px`;
+    itemLnk.style.top = `${Y}px`;
+    catX = X;
+    catY = Y;
+}
+
 //спроба намалювати дошку з клітинками
 //не дороблено: треба прибирати перший квадрат та взагалі чистити поле, або хоча б прибирати інпути після рендеру дошки
 // elForm.addEventListener('submit', (ev) => {   
@@ -87,8 +97,9 @@ renderHouse = (itemLnk) => {
 // })
 
     renderHouse(elHouse);
-
-console.log(houseX, houseY);
+    console.log('House:', houseX, houseY);
+    renderCat(elCat);
+    console.log('Cat:', catX, catY);
 
     renderStartDog(elDog);
 //console.log(elDog.getBoundingClientRect());
@@ -136,6 +147,11 @@ elPlayBoard.addEventListener('click', (ev) => {
         //чи зайшов додому    
         if((Xl>=houseX-50)&&(Xl<=houseX+80)&&(Yt>=houseY-50)&&(Yt<=houseY+120)) {
             elPlayBoard.innerHTML = `<span class="atHome">Вітаю, цуценя вдома!<br>Якщо хочеш зіграти ще, онови сторінку.</span>`;
+        }
+
+        //чи натрапив на кота
+        if((Xl>=catX-50)&&(Xl<=catX+120)&&(Yt>=catY-50)&&(Yt<=catY+120)) {
+            elPlayBoard.innerHTML = `<span class="atCat">МЯУ!!!<br>Не треба ображати кицьку!!!<br><br>Якщо хочеш зіграти ще, онови сторінку.</span>`;
         }
 })
 
