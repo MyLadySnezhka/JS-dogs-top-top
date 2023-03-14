@@ -12,6 +12,9 @@
     //border: 3px double blue;
     //box-sizing: border-box;
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .htmlRow {
@@ -56,9 +59,9 @@
 }
 
 .atHome {
-    display: flex;
+    background-color: orange;
+    border: 5px double blue;
+    padding: 20px;
     font-size: 36px;
-    justify-content: center;
-    align-items: center;
 }
 
