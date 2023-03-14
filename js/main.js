@@ -10,6 +10,7 @@ const elHouse = document.querySelector('.house');
 let X, Y, Xnew, Ynew;
 let Xl, Yt, Xm, Ym, Xr, Yd, Xw, Yh;
 let html = '';
+let houseX, houseY;
 
 //розмір ігрового поля
 const borderX = elPlayBoard.clientWidth;
@@ -60,6 +61,8 @@ renderHouse = (itemLnk) => {
     randCoord(itemLnk);
     itemLnk.style.left = `${X}px`;
     itemLnk.style.top = `${Y}px`;
+    houseX = X;
+    houseY = Y;
 }
 
 //спроба намалювати дошку з клітинками
@@ -84,9 +87,12 @@ renderHouse = (itemLnk) => {
 // })
 
     renderHouse(elHouse);
+
+console.log(houseX, houseY);
+
     renderStartDog(elDog);
 //console.log(elDog.getBoundingClientRect());
-console.log('верхний левый угол старт', Xl, Xm, Yt, Ym);
+//console.log('верхний левый угол старт', Xl, Xm, Yt, Ym);
 
 elPlayBoard.addEventListener('click', (ev) => {
         coordDog(elDog);
@@ -103,21 +109,34 @@ elPlayBoard.addEventListener('click', (ev) => {
             console.log('верхний правый угол');
             Xnew = Xl - Xw/2;
             Ynew = Yt + Yh/2;
+            console.log('новое положение', Xnew, Ynew);
         } else if ((mouseX>Xl)&&(mouseX<Xm)&&(mouseY>Ym)&&(mouseY<Yd)) {
             console.log('нижний левый угол');
             Xnew = Xl + Xw/2;
             Ynew = Yt - Yh/2;
+            console.log('новое положение', Xnew, Ynew);
         } else if ((mouseX>Xm)&&(mouseX<Xr)&&(mouseY>Ym)&&(mouseY<Yd)) {
             console.log('нижний правый угол');
             Xnew = Xl - Xw/2;
             Ynew = Yt - Yh/2;
+            console.log('новое положение', Xnew, Ynew);
         }
 
-        if ((Xnew>0)&&(Xnew<(borderX-Xw))&&(Ynew>0)&&(Ynew<(borderY-Yh))) {
+        //перевірка, чи не вийшов за межі поля
+        if ((Xnew>=0)&&(Xnew<=(borderX-Xw))&&(Ynew>=0)&&(Ynew<=(borderY-Yh))) {
             Xl = Xnew;
             Yt = Ynew;
+        } else {if(Xnew<=0) {Xl = 1};
+               if(Xnew>(borderX-Xw)) {Xl = borderX-Xw};
+               if(Ynew<=0) {Yt = 1};
+               if(Ynew>borderY-Yh) {Yt=borderY-Yh};
+            }  
             renderDog(Xl, Yt, elDog);
-        };
+
+        //чи зайшов додому    
+        if((Xl>=houseX-50)&&(Xl<=houseX+80)&&(Yt>=houseY-50)&&(Yt<=houseY+120)) {
+            elPlayBoard.innerHTML = `<span class="atHome">Вітаю, цуценя вдома!<br>Якщо хочеш зіграти ще, онови сторінку.</span>`;
+        }
 })
 
 
