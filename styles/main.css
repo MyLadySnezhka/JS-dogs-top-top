@@ -1,0 +1,51 @@
+.wrap {
+  min-width: 900px;
+  min-height: 800px;
+}
+
+.board {
+  margin-top: 20px;
+  background-color: rgb(5, 137, 22);
+  box-sizing: border-box;
+  position: relative;
+}
+
+.htmlRow {
+  display: flex;
+}
+
+.block {
+  border: 1px solid #000;
+  width: 100px;
+  height: 100px;
+  background-color: rgb(5, 137, 22);
+}
+
+.dog {
+  width: 160px;
+  height: 160px;
+  border: 1xp solid #000;
+  background-image: url(../images/dog.png);
+  background-repeat: no-repeat;
+  position: absolute;
+}
+
+.house {
+  width: 200px;
+  height: 200px;
+  background-image: url(../images/dog-house.png);
+  position: absolute;
+}
+
+.cat {
+  width: 120px;
+  height: 120px;
+  border: 1xp solid #000;
+  background-image: url(../images/cat.png);
+  position: absolute;
+}
+
+.hello {
+  height: 140px;
+  padding: 15px;
+}/*# sourceMappingURL=main.css.map */
