@@ -14,11 +14,14 @@ let html = '';
 //розмір ігрового поля
 console.log('Поле:', elPlayBoard.clientHeight, elPlayBoard.clientWidth);
 
-const blockWidth = elBlock.clientWidth;
-const blockHeight = elBlock.clientHeight;
+//розмір клітин, на які хотіла поділити поле
+// const blockWidth = elBlock.clientWidth;
+// const blockHeight = elBlock.clientHeight;
 
-elPlayBoard.style.height = '800px';
-elPlayBoard.style.width = '1200px';
+// elPlayBoard.style.height = '800px';
+// elPlayBoard.style.width = '1200px';
+// elBlock.style.height = '100px';
+// elBlock.style.width = '100px';
 
 const randCoord = (itemLnk) => {
     let maxX = elPlayBoard.clientWidth - itemLnk.clientWidth;
@@ -28,21 +31,27 @@ const randCoord = (itemLnk) => {
 }
 
 const coordDog = (itemLnk) => {
-    randCoord(itemLnk);
     Xw = itemLnk.clientWidth;
     Yh = itemLnk.clientHeight;
-    Xl = X;
-    Yt = Y;
-    Xr = X + Xw;
-    Yd = Y + Yh;
-    Xm = X + Xw/2;
-    Ym = Y + Yh/2;
+    Xr = Xl + Xw;
+    Yd = Yt + Yh;
+    Xm = Xl + Xw/2;
+    Ym = Yt + Yh/2;
 }
 
-renderDog = (itemLnk) => {
+renderStartDog = (itemLnk) => {
+    randCoord(itemLnk);
     coordDog(itemLnk);
+    Xl = X;
+    Yt = Y;
     itemLnk.style.left = `${Xl}px`;
     itemLnk.style.top = `${Yt}px`; 
+}
+
+renderDog = (X , Y, itemLnk) => {
+    coordDog(itemLnk);
+    itemLnk.style.left = `${X}px`;
+    itemLnk.style.top = `${Y}px`;
 }
 
 renderHouse = (itemLnk) => {
@@ -51,52 +60,58 @@ renderHouse = (itemLnk) => {
     itemLnk.style.top = `${Y}px`;
 }
 
-elForm.addEventListener('submit', (ev) => {   
-    ev.preventDefault();
-    const formData = new FormData(ev.target);
-    const row = formData.get('rowBlock');
-    const column = formData.get('columnBlock');
-    elPlayBoard.style.height = `${row*blockHeight}px`;
-    elPlayBoard.style.width = `${column*blockWidth}px`;
-        for(let i=1; i<=column; i++) {
-            html = html + '<div class="block"></div>';
-        };
-        let renderRow = `<div class="htmlRow">${html}</div>`;
-        for(let j=1; j<=row; j++) {
-            elPlayBoard.insertAdjacentHTML('beforeend', renderRow);
-        }
+//спроба намалювати дошку з клітинками
+//не дороблено: треба прибирати перший квадрат та взагалі чистити поле, або хоча б прибирати інпути після рендеру дошки
+// elForm.addEventListener('submit', (ev) => {   
+//     ev.preventDefault();
+//     const formData = new FormData(ev.target);
+//     const row = formData.get('rowBlock');
+//     const column = formData.get('columnBlock');
+//     elPlayBoard.style.height = `${row*blockHeight}px`;
+//     elPlayBoard.style.width = `${column*blockWidth}px`;
+//         for(let i=1; i<=column; i++) {
+//             html = html + '<div class="block"></div>';
+//         };
+//         let renderRow = `<div class="htmlRow">${html}</div>`;
+//         for(let j=1; j<=row; j++) {
+//             elPlayBoard.insertAdjacentHTML('beforeend', renderRow);
+//         }
+    
+//     renderHouse(elHouse);
+//     renderDog(elDog);
+// })
+
     renderHouse(elHouse);
-    renderDog(elDog);
-})
-
-
+    renderStartDog(elDog);
 //console.log(elDog.getBoundingClientRect());
+console.log('верхний левый угол старт', Xl, Xm, Yt, Ym);
 
 elPlayBoard.addEventListener('click', (ev) => {
-               
+        coordDog(elDog);
+        
         mouseX = ev.pageX;
         mouseY = ev.pageY;
         
         if((mouseX>Xl)&&(mouseX<Xm)&&(mouseY>Yt)&&(mouseY<Ym)) {
-            console.log('верхний левый угол');
-            elDog.style.left = `${Xl + Xw}px`;
-            elDog.style.top = `${Yt + Yh}px`;
+            console.log('верхний левый угол', Xl, Xm, Yt, Ym);
+            Xl = Xl + Xw;
+            Yt = Yt + Yh;
+            console.log('новое положение', Xl, Xm, Yt, Ym);
         } else if ((mouseX>Xm)&&(mouseX<Xr)&&(mouseY>Yt)&&(mouseY<Ym)) {
             console.log('верхний правый угол');
-            elDog.style.left = `${Xl - Xw}px`;
-            elDog.style.top = `${Yt + Yh}px`;
+            Xl = Xl - Xw;
+            Yt = Yt + Yh;
         } else if ((mouseX>Xl)&&(mouseX<Xm)&&(mouseY>Ym)&&(mouseY<Yd)) {
             console.log('нижний левый угол');
-            elDog.style.left = `${Xl + Xw}px`;
-            elDog.style.top = `${Yt - Yh}px`;
+            Xl = Xl + Xw;
+            Yt = Yt - Yh;
         } else if ((mouseX>Xm)&&(mouseX<Xr)&&(mouseY>Ym)&&(mouseY<Yd)) {
             console.log('нижний правый угол');
-            elDog.style.left = `${Xl - Xw}px`;
-            elDog.style.top = `${Yt - Yh}px`;
+            Xl = Xl - Xw;
+            Yt = Yt - Yh;
         }
 
-        //придумать, чем заменить
-        //renderDog(elDog);
+        renderDog(Xl, Yt, elDog);
 })
 
 
