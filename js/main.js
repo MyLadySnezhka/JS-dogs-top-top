@@ -150,7 +150,7 @@ elPlayBoard.addEventListener('click', (ev) => {
         }
 
         //чи натрапив на кота
-        if((Xl>=catX-50)&&(Xl<=catX+120)&&(Yt>=catY-50)&&(Yt<=catY+120)) {
+        if((Xl>=catX-50)&&(Xl<=catX+160)&&(Yt>=catY-50)&&(Yt<=catY+160)) {
             elPlayBoard.innerHTML = `<span class="atCat">МЯУ!!!<br>Не треба ображати кицьку!!!<br><br>Якщо хочеш зіграти ще, онови сторінку.</span>`;
         }
 })
