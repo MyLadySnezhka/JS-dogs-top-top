@@ -61,10 +61,16 @@
 }
 
 .atCat {
+  width: 600px;
+  min-height: 210px;
   background-color: rgb(106, 6, 6);
   border: 5px double orange;
   padding: 20px;
   font-size: 36px;
   text-align: center;
   color: orange;
+  position: absolute;
+  left: 30%;
+  top: 35vh;
+  display: none;
 }/*# sourceMappingURL=main.css.map */

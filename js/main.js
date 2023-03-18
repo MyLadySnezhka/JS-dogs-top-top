@@ -2,17 +2,19 @@ const elDog = document.querySelector('.dog');
 const elPlayBoard = document.querySelector('.board');
 const elHouse = document.querySelector('.house');
 const elCat = document.querySelector('.cat');
+const gameOverText = document.querySelector('.atCat');
 // const elBlock = document.querySelector('.block');
 // const elRow = document.querySelector('input[name=rowBlock]');
 // const elColumn = document.querySelector('input[name=columnBlock]');
 // const elForm = document.querySelector('form');
 // const elHtmlRow = document.querySelector('.htmlRow');
 
-let X, Y, Xnew, Ynew;
-let Xl, Yt, Xm, Ym, Xr, Yd, Xw, Yh;
+let X, Y, xNew, yNew;
+let xLeft, yTop, xMid, yMid, xRight, yDown, xWidth, yHeight;
 let html = '';
 let houseX, houseY;
 let catX, catY;
+
 
 //розмір ігрового поля
 const borderX = elPlayBoard.clientWidth;
@@ -36,21 +38,21 @@ const randCoord = (itemLnk) => {
 }
 
 const coordDog = (itemLnk) => {
-    Xw = itemLnk.clientWidth;
-    Yh = itemLnk.clientHeight;
-    Xr = Xl + Xw;
-    Yd = Yt + Yh;
-    Xm = Xl + Xw/2;
-    Ym = Yt + Yh/2;
+    xWidth = itemLnk.clientWidth;
+    yHeight = itemLnk.clientHeight;
+    xRight = xLeft + xWidth;
+    yDown = yTop + yHeight;
+    xMid = xLeft + xWidth/2;
+    yMid = yTop + yHeight/2;
 }
 
 renderStartDog = (itemLnk) => {
     randCoord(itemLnk);
     coordDog(itemLnk);
-    Xl = X;
-    Yt = Y;
-    itemLnk.style.left = `${Xl}px`;
-    itemLnk.style.top = `${Yt}px`; 
+    xLeft = X;
+    yTop = Y;
+    itemLnk.style.left = `${xLeft}px`;
+    itemLnk.style.top = `${yTop}px`; 
 }
 
 renderDog = (X , Y, itemLnk) => {
@@ -103,7 +105,7 @@ renderCat = (itemLnk) => {
 
     renderStartDog(elDog);
 //console.log(elDog.getBoundingClientRect());
-//console.log('верхний левый угол старт', Xl, Xm, Yt, Ym);
+//console.log('верхний левый угол старт', xLeft, xMid, yTop, yMid);
 
 elPlayBoard.addEventListener('click', (ev) => {
         coordDog(elDog);
@@ -111,47 +113,49 @@ elPlayBoard.addEventListener('click', (ev) => {
         mouseX = ev.pageX;
         mouseY = ev.pageY;
         
-        if((mouseX>Xl)&&(mouseX<Xm)&&(mouseY>Yt)&&(mouseY<Ym)) {
-            console.log('верхний левый угол', Xl, Xm, Yt, Ym);
-            Xnew = Xl + Xw/2;
-            Ynew = Yt + Yh/2;
-            console.log('новое положение', Xnew, Ynew);
-        } else if ((mouseX>Xm)&&(mouseX<Xr)&&(mouseY>Yt)&&(mouseY<Ym)) {
+        if((mouseX>xLeft)&&(mouseX<xMid)&&(mouseY>yTop)&&(mouseY<yMid)) {
+            console.log('верхний левый угол', xLeft, xMid, yTop, yMid);
+            xNew = xLeft + xWidth/2;
+            yNew = yTop + yHeight/2;
+            console.log('новое положение', xNew, yNew);
+        } else if ((mouseX>xMid)&&(mouseX<xRight)&&(mouseY>yTop)&&(mouseY<yMid)) {
             console.log('верхний правый угол');
-            Xnew = Xl - Xw/2;
-            Ynew = Yt + Yh/2;
-            console.log('новое положение', Xnew, Ynew);
-        } else if ((mouseX>Xl)&&(mouseX<Xm)&&(mouseY>Ym)&&(mouseY<Yd)) {
+            xNew = xLeft - xWidth/2;
+            yNew = yTop + yHeight/2;
+            console.log('новое положение', xNew, yNew);
+        } else if ((mouseX>xLeft)&&(mouseX<xMid)&&(mouseY>yMid)&&(mouseY<yDown)) {
             console.log('нижний левый угол');
-            Xnew = Xl + Xw/2;
-            Ynew = Yt - Yh/2;
-            console.log('новое положение', Xnew, Ynew);
-        } else if ((mouseX>Xm)&&(mouseX<Xr)&&(mouseY>Ym)&&(mouseY<Yd)) {
+            xNew = xLeft + xWidth/2;
+            yNew = yTop - yHeight/2;
+            console.log('новое положение', xNew, yNew);
+        } else if ((mouseX>xMid)&&(mouseX<xRight)&&(mouseY>yMid)&&(mouseY<yDown)) {
             console.log('нижний правый угол');
-            Xnew = Xl - Xw/2;
-            Ynew = Yt - Yh/2;
-            console.log('новое положение', Xnew, Ynew);
+            xNew = xLeft - xWidth/2;
+            yNew = yTop - yHeight/2;
+            console.log('новое положение', xNew, yNew);
         }
 
         //перевірка, чи не вийшов за межі поля
-        if ((Xnew>=0)&&(Xnew<=(borderX-Xw))&&(Ynew>=0)&&(Ynew<=(borderY-Yh))) {
-            Xl = Xnew;
-            Yt = Ynew;
-        } else {if(Xnew<=0) {Xl = 1};
-               if(Xnew>(borderX-Xw)) {Xl = borderX-Xw};
-               if(Ynew<=0) {Yt = 1};
-               if(Ynew>borderY-Yh) {Yt=borderY-Yh};
+        if ((xNew>=0)&&(xNew<=(borderX-xWidth))&&(yNew>=0)&&(yNew<=(borderY-yHeight))) {
+            xLeft = xNew;
+            yTop = yNew;
+        } else {if(xNew<=0) {xLeft = 1};
+               if(xNew>(borderX-xWidth)) {xLeft = borderX-xWidth};
+               if(yNew<=0) {yTop = 1};
+               if(yNew>borderY-yHeight) {yTop=borderY-yHeight};
             }  
-            renderDog(Xl, Yt, elDog);
+            renderDog(xLeft, yTop, elDog);
 
         //чи зайшов додому    
-        if((Xl>=houseX-50)&&(Xl<=houseX+80)&&(Yt>=houseY-50)&&(Yt<=houseY+120)) {
+        if((xLeft>=houseX-50)&&(xLeft<=houseX+80)&&(yTop>=houseY-50)&&(yTop<=houseY+120)) {
             elPlayBoard.innerHTML = `<span class="atHome">Вітаю, цуценя вдома!<br>Якщо хочеш зіграти ще, онови сторінку.</span>`;
         }
 
         //чи натрапив на кота
-        if((Xl>=catX-50)&&(Xl<=catX+160)&&(Yt>=catY-50)&&(Yt<=catY+160)) {
-            elPlayBoard.innerHTML = `<span class="atCat">МЯУ!!!<br>Не треба ображати кицьку!!!<br><br>Якщо хочеш зіграти ще, онови сторінку.</span>`;
+        if((xLeft>=catX-50)&&(xLeft<=catX+160)&&(yTop>=catY-50)&&(yTop<=catY+160)) {
+            //elPlayBoard.innerHTML = `<span class="atCat">МЯУ!!!<br>Не треба ображати кицьку!!!<br><br>Якщо хочеш зіграти ще, онови сторінку.</span>`;
+            //elPlayBoard.classList.add('atCat');
+            gameOverText.style.display = 'block';
         }
 })
 
